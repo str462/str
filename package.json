@@ -1,0 +1,10 @@
+{
+  "name": "dealcheck",
+  "version": "2.1.0",
+  "private": true,
+  "description": "DEALCHECK \u2014 AI shopping decision assistant",
+  "dependencies": {
+    "openai": "^5.12.0",
+    "stripe": "^18.5.0"
+  }
+}
