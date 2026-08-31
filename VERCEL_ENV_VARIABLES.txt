@@ -1,0 +1,61 @@
+DEALCHECK — Vercel Environment Variables
+
+Add these in Vercel → Project → Settings → Environment Variables.
+
+OPENAI_API_KEY
+Your OpenAI API key (sk-...).
+
+OPENAI_MODEL
+gpt-5.6-luna (Premium model).
+
+OPENAI_FREE_MODEL
+gpt-5.4-mini (lower-cost model used for free/pre-Premium scans).
+
+OPENAI_PREMIUM_MODEL
+gpt-5.6-luna (Premium override; optional if OPENAI_MODEL is already set to this model).
+
+STRIPE_SECRET_KEY
+Your Stripe secret key (sk_test_... while testing).
+
+STRIPE_WEBHOOK_SECRET
+The whsec_... signing secret for https://YOUR-VERCEL-DOMAIN/api/webhook.
+
+STRIPE_PRICE_ID
+The recurring Stripe Price ID for DEALCHECK Premium at $35 USD/month.
+IMPORTANT: replace the old price ID with the new $35/month price ID.
+
+DEALCHECK_STRIPE_PK
+Your Stripe publishable key (pk_test_... while testing).
+
+SITE_URL
+https://YOUR-VERCEL-DOMAIN.vercel.app
+
+NEXT_PUBLIC_SITE_URL
+https://YOUR-VERCEL-DOMAIN.vercel.app
+
+Payment model in this version
+• $0.99 one-time starter charge today
+• 3-day Premium trial
+• $35/month recurring after the trial
+• Payment method is collected with Stripe Elements for future recurring billing
+• Apple Pay, Google Pay and Link are rendered through Stripe Express Checkout when eligible
+• The browser/device, Stripe account settings, domain registration and currency determine which wallet buttons appear.
+
+Do not put secret keys into GitHub.
+
+
+AI model routing
+• Before a verified Premium subscription: OPENAI_FREE_MODEL (default gpt-5.4-mini).
+• During the 3-day Premium trial and while the subscription is active: OPENAI_PREMIUM_MODEL (default gpt-5.6-luna).
+• The server verifies the Stripe subscription ID before selecting the Premium model; localStorage alone is not trusted.
+• If Premium verification fails, the request safely falls back to the lower-cost free model.
+
+Webhook events for the current custom checkout
+• payment_intent.succeeded (required for reliable server-side subscription activation)
+• customer.subscription.created
+• customer.subscription.updated
+• customer.subscription.deleted
+• customer.subscription.paused
+• invoice.paid
+• invoice.payment_failed
+The old checkout.session.* events may remain configured for compatibility, but the new payment flow does not depend on them.
